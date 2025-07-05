@@ -15,7 +15,7 @@ app.use(express.json())
 // ✅ CORS configuration (for localhost + Vercel frontend)
 const allowedOrigins = [
   'http://localhost:5173',
-  'abc'
+  'https://task-management-app-one-taupe.vercel.app'
 ];
 
 app.use(cors({
