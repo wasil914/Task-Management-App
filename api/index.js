@@ -1,3 +1,33 @@
+// import express from 'express'
+// import mongoose from 'mongoose'
+// import dotenv from 'dotenv'
+// import cors from 'cors'
+// import Taskrouter from './routes/Task.route.js'
+
+// dotenv.config()
+
+// const PORT = process.env.PORT
+
+// const app = express()
+
+// app.use(express.json())
+// app.use(cors({
+//     origin: 'http://localhost:5173'
+// }))
+
+
+// // routes 
+
+// app.use('/api/task', Taskrouter)
+
+// mongoose.connect(process.env.MONGODB_CONN).then(() => {
+//     console.log('Database connected.')
+// }).catch(err => console.log('Database connection failed.', err))
+
+
+// app.listen(PORT, () => {
+//     console.log('Server running on port:', PORT)
+// })
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -11,20 +41,31 @@ const PORT = process.env.PORT
 const app = express()
 
 app.use(express.json())
+
+// ✅ CORS FIXED HERE (only change)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://task-management-app-bs5l.onrender.com'
+]
+
 app.use(cors({
-    origin: 'http://localhost:5173'
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('❌ CORS not allowed for this origin'))
+    }
+  },
+  credentials: true
 }))
 
-
 // routes 
-
 app.use('/api/task', Taskrouter)
 
 mongoose.connect(process.env.MONGODB_CONN).then(() => {
-    console.log('Database connected.')
+  console.log('Database connected.')
 }).catch(err => console.log('Database connection failed.', err))
 
-
 app.listen(PORT, () => {
-    console.log('Server running on port:', PORT)
+  console.log('Server running on port:', PORT)
 })
